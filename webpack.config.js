@@ -21,6 +21,9 @@ Encore
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
     .addEntry('app', './assets/app.js')
+    .addEntry('jquery', './node_modules/jquery/dist/jquery.min.js')
+    .addEntry('new', './assets/js/project/new_project.js')
+    .addEntry('bootstrap', './node_modules/bootstrap/dist/js/bootstrap.bundle.js')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()
@@ -57,7 +60,7 @@ Encore
     .enableSassLoader()
     .enableVersioning()
 
-    //.addStyleEntry('app', './assets/styles/app.scss')
+    //.addStyleEntry('bootstrap', '~bootstrap/scss/bootstrap.scss')
 
     // uncomment if you use TypeScript
     //.enableTypeScriptLoader()
@@ -70,7 +73,7 @@ Encore
     //.enableIntegrityHashes(Encore.isProduction())
 
     // uncomment if you're having problems with a jQuery plugin
-    //.autoProvidejQuery()
+    .autoProvidejQuery()
 ;
 
 module.exports = Encore.getWebpackConfig();

@@ -1,0 +1,22 @@
+<nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0">
+    <div class="container-fluid d-flex flex-column p-0">
+        <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
+            <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-laugh-wink"></i></div>
+            <div class="sidebar-brand-text mx-3"><span>Erdiwo</span></div>
+        </a>
+        <hr class="sidebar-divider my-0">
+        <ul class="nav navbar-nav text-light" id="accordionSidebar">
+            <li class="nav-item" role="presentation"><a class="nav-link {{ activeLink('home') }}" href="{{ path('home') }}"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
+           {% if app.user %}
+                {# <li class="nav-item" role="presentation"><a class="nav-link {{ activeLink('project') }}" href="{{ path('project') }}"><i class="fas fa-smile"></i><span>Projet</span></a></li> #}
+                {# <li class="nav-item" role="presentation"><a class="nav-link {{ activeLink('profile') }}" href="{{ path('profile') }}"><i class="fas fa-user"></i><span>Profile</span></a></li> #}
+                {# <li class="nav-item" role="presentation"><a class="nav-link {{ activeLink('user') }}" href="{{ path('user') }}"><i class="fas fa-table"></i><span>Membre</span></a></li> #}
+                {# <li class="nav-item" role="presentation"><a class="nav-link {{ activeLink('app_message') }}" href="{{ path('app_message') }}"><i class="fas fa-box"></i><span>Message</span></a></li> #}
+            {% else %}
+                <li class="nav-item" role="presentation"><a class="nav-link {{ activeLink('app_login') }}" href="{{ path('app_login') }}"><i class="far fa-user-circle"></i><span>Connexion</span></a></li>
+                <li class="nav-item" role="presentation"><a class="nav-link {{ activeLink('app_register') }}" href="{{ path('app_register') }}"><i class="fas fa-user-circle"></i><span>Inscription</span></a></li>
+            {% endif %}
+            </ul>
+        <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
+    </div>
+</nav>
