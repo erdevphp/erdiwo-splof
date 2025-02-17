@@ -1,37 +1,23 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Message index{% endblock %}
+{% block title %}Boite de reception{% endblock %}
 
 {% block body %}
-    <h1>Message index</h1>
+    <h1>Boite de reception</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Content</th>
-                <th>CreatedAt</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for message in messages %}
-            <tr>
-                <td>{{ message.id }}</td>
-                <td>{{ message.content }}</td>
-                <td>{{ message.createdAt ? message.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>
-                    <a href="{{ path('app_message_show', {'id': message.id}) }}">show</a>
-                    <a href="{{ path('app_message_edit', {'id': message.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_message_new') }}">Create new</a>
+    {% for conversation in conversations %}
+        <div class="card card-body">
+            <h1 class="h4">{{ conversation.firstname ~ ' ' ~ conversation.lastname  }}</h1>
+            <h2 class="h6">{{ conversation.otherEmail }}</h2>
+            <p>{{ conversation.lastMessage }}</p>
+            <p>
+                <a class="btn btn-primary" href="{{ path('app_message_show', {'id': conversation.otherUserId}) }}">Voir</a>
+            </p>
+        </div>
+    {% else %}
+        <div class="">
+            Aucun message réçu
+            {# Aucun message récu. <a href="{{path('user')}}">Trouver un membre ?</a> #}
+        </div>
+    {% endfor %}
 {% endblock %}

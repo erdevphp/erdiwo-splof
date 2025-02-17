@@ -15,16 +15,10 @@ class MessageType extends AbstractType
     {
         $builder
             ->add('content')
-            ->add('createdAt', null, [
-                'widget' => 'single_text'
-            ])
-            ->add('sender', EntityType::class, [
-                'class' => User::class,
-'choice_label' => 'id',
-            ])
+            
             ->add('receiver', EntityType::class, [
                 'class' => User::class,
-'choice_label' => 'id',
+                'choice_label' => 'firstname',
             ])
         ;
     }
