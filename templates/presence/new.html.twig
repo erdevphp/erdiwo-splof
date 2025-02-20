@@ -5,6 +5,14 @@
 {% block body %}
     <h1 class="text-center">Marquez votre présence</h1>
 
+    <hr>
+
+    <div class="text-center">
+        <h2 class="text-center h4 text-primary">Souriez devant la caméra</h2>
+        <video id="video" autoplay></video>
+        <button id="capture" class="btn btn-info form-control">Capturer votre image</button>
+        <canvas id="canvas" class="d-none"></canvas>
+    </div>
     {{ include('presence/_form.html.twig') }}
 
     <hr>
@@ -15,4 +23,5 @@
 {% block javascripts %}
     {{ encore_entry_script_tags('app') }}
     {{ encore_entry_script_tags('presence') }}
+    {{ encore_entry_script_tags('reconnaissance') }}
 {% endblock %}

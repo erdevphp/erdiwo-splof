@@ -18,29 +18,7 @@ function checkLocation() {
                 const isInZone = isPointInPolygon(point, zoneAnosy);
                 // Vérification si l'utilisateur est dans la zone
                 if (isInZone) {
-                    fetch('/presence/new/pointage', {
-                        method : 'POST', 
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(point)
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log(data);
-                        
-                        if (data.status !== 'success') {
-                            alert("Vous êtes hors de la zone de travail!");
-                            window.location.href = '/';
-                        } else {
-                            console.log('coucou');
-                            
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Erreur de vérification', error);
-                        window.location.href = '/';
-                    })
+                    
                 } else {                    
                     alert("Impossible de pointer votre présence. Vous n'êtes pas au bureau.");
                     window.location.href = '/';
