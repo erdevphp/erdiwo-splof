@@ -23,6 +23,7 @@ Encore
     .addEntry('app', './assets/app.js')
     .addEntry('jquery', './node_modules/jquery/dist/jquery.min.js')
     .addEntry('new', './assets/js/project/new_project.js')
+    .addEntry('presence', './assets/js/presence/localisation.js')
     .addEntry('bootstrap', './node_modules/bootstrap/dist/js/bootstrap.bundle.js')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.

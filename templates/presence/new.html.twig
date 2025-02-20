@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvelle présence{% endblock %}
+
+{% block body %}
+    <h1 class="text-center">Marquez votre présence</h1>
+
+    {{ include('presence/_form.html.twig') }}
+
+    <hr>
+
+    <a href="{{ path('app_presence_index') }}">Voir la liste de présence</a>
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('app') }}
+    {{ encore_entry_script_tags('presence') }}
+{% endblock %}

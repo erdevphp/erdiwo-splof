@@ -18,4 +18,14 @@ import './js/jquery.timeago'
 
 jQuery(document).ready(function() {
     jQuery("time.timeago").timeago();
+    const logout = document.querySelector('#logout')
+    if (logout) {
+        logout.addEventListener('click', function(e){
+            e.preventDefault();
+            if(confirm('Voulez-vous vraiement vous déconnectez?')) {
+                window.location.href = e.target.href
+            }
+        })
+    }
+    
 });

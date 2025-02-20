@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -44,6 +46,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 50, nullable: true)]
     private ?string $pseudo = null;
+
+    /**
+     * @var Collection<int, Presence>
+     */
+    #[ORM\OneToMany(targetEntity: Presence::class, mappedBy: 'user', orphanRemoval: true)]
+    private Collection $presences;
+
+    public function __construct()
+    {
+        $this->presences = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -163,6 +176,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPseudo(?string $pseudo): static
     {
         $this->pseudo = $pseudo;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Presence>
+     */
+    public function getPresences(): Collection
+    {
+        return $this->presences;
+    }
+
+    public function addPresence(Presence $presence): static
+    {
+        if (!$this->presences->contains($presence)) {
+            $this->presences->add($presence);
+            $presence->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePresence(Presence $presence): static
+    {
+        if ($this->presences->removeElement($presence)) {
+            // set the owning side to null (unless already changed)
+            if ($presence->getUser() === $this) {
+                $presence->setUser(null);
+            }
+        }
 
         return $this;
     }

@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Presence{% endblock %}
+
+{% block body %}
+    <h1 class="text-center">N'oubliez jamais de pointer votre heure de sortie</h1>
+
+    <hr>
+
+    {{ include('presence/_form.html.twig', {'button_label': 'Pointage de l\'heure de sortie'}) }}
+
+    <hr>
+
+    <a href="{{ path('app_presence_index') }}">Revenir à la liste des pointages</a>
+{% endblock %}

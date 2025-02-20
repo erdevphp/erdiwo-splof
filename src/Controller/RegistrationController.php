@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Security\UserAuthenticator;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -19,6 +20,9 @@ class RegistrationController extends AbstractController
     #[Route('/register', name: 'app_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, Security $security, EntityManagerInterface $entityManager): Response
     {
+        if ($this->getUser()) {
+            return $this->redirectToRoute('home');
+        }
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
@@ -28,8 +32,9 @@ class RegistrationController extends AbstractController
             $plainPassword = $form->get('plainPassword')->getData();
 
             // encode the plain password
+            
             $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
-
+            $user->setCreatedAt(new DateTimeImmutable());
             $entityManager->persist($user);
             $entityManager->flush();
 

@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Pointage{% endblock %}
+
+{% block body %}
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="h3 text-center alert alert-{{label}}">
+                {{message}}
+            </div>
+        {% endfor %}
+    {% endfor %}
+    <h1 class="text-center">Pointage</h1>
+    
+    {% if not hasAlreadyCheckIn %}
+    <hr>
+    <p>
+        <a class="btn btn-info form-control" href="{{ path('app_presence_new') }}">Nouveau pointage</a>
+    </p>
+    {% endif %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Heure d'arrivé</th>
+                <th>Heure de sortie</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        {% for presence in presences %}
+        <tbody>
+            <tr>
+                <td>{{ presence.startedAt ? presence.startedAt|date('H\\h i\\m\\i\\n') : '' }}</td>
+                <td>{{ presence.finishedAt ? presence.finishedAt|date('H\\h i\\m\\i\\n') : "N'oubliez pas de pointer votre heure de sortie" }}</td>
+                <td>
+                    {# <a class="btn btn-primary" href="{{ path('app_presence_show', {'id': presence.id}) }}">Voir le pointage</a> #}
+                    {% if hasAlreadyCheckIn %}
+                        <a class="btn btn-success" href="{{ path('app_presence_edit', {'id': presence.id}) }}">Pointage de l'heure de sortie</a>
+                    {% endif %}
+                </td>            
+            </tr>
+        {% else %}
+            <tr>
+                <td class="alert alert-danger" colspan="4">
+                    Aucun pointage trouvé
+                </td>
+            <tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
