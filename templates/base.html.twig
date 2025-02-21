@@ -8,6 +8,8 @@
     <title>
       Erdiwo-{% block title %}{% endblock %}
     </title>
+    {# Face-api.js via CDN (à charger AVANT Webpack Encore) #}
+    <script src="https://cdn.jsdelivr.net/npm/@vladmandic/face-api/dist/face-api.js"></script>
     {% block stylesheets %}
       {{ encore_entry_link_tags('app') }}
     {% endblock %}

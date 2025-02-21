@@ -4,6 +4,8 @@
  * This file will be included onto the page via the importmap() Twig function,
  * which should already be in your base.html.twig.
  */
+// import * as faceapi from '@vladmandic/face-api';
+
 // assets/styles/app.scss
 // import '../node_modules/bootstrap/dist/js/bootstrap.bundle'
 import './styles/app.scss';
