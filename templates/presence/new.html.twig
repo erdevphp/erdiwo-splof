@@ -7,15 +7,16 @@
 
     <hr>
 
-    <div class="text-center">
+    <div id="videoBox" class="text-center">
         <h2 class="text-center h4 text-primary">Souriez devant la caméra</h2>
         <video id="video" autoplay></video>
         <button id="capture" class="btn btn-info form-control">Capturer votre image</button>
         <canvas id="canvas" class="d-none"></canvas>
         <hr>
-        {# Résultat #}
-        <p id="status">Veuillez prendre une photo pour vérification.</p>
     </div>
+
+    {# Résultat #}
+    <p id="status" class="text-center">Veuillez prendre une photo pour vérification.</p>
 
     {{ include('presence/_form.html.twig') }}
 

@@ -1,8 +1,11 @@
 document.addEventListener("DOMContentLoaded", async () => {
+    const videoBox = document.getElementById("videoBox");
     const video = document.getElementById("video");
     const captureBtn = document.getElementById("capture");
     const canvas = document.getElementById("canvas");
     const statusText = document.getElementById("status");
+    const validationBtn = document.getElementById("validationBtn");
+    const profilPicture = document.getElementById("profilPicture").getAttribute('data-picture');    
 
     // Charger les modèles Face-api.js
     await faceapi.nets.ssdMobilenetv1.loadFromUri('/models');
@@ -14,15 +17,20 @@ document.addEventListener("DOMContentLoaded", async () => {
         .then(stream => { video.srcObject = stream; })
         .catch(err => console.error("Erreur d'accès à la webcam :", err));
 
-    // Charger la photo de profil (URL stockée en base)
-    const profileImage = await faceapi.fetchImage('/uploads/erdiwo.jpg');
+    // Charger la photo de profil stockée dans la base de donnée
+    const profileImage = await faceapi.fetchImage(`/uploads/profil/${profilPicture}`);
 
+    
+    // Lors d'un click sur le boutton de capture
     // Fonction pour capturer une image de la webcam
     captureBtn.addEventListener("click", async () => {
         const ctx = canvas.getContext("2d");
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+        //On peut afficher le canvas si on le souhaite
+        //canvas.classList.remove('d-none')
 
         try {
             griserPage();
@@ -38,9 +46,10 @@ document.addEventListener("DOMContentLoaded", async () => {
             // Détecter les descripteurs
             const profileDescriptor = await getFaceDescriptor(profileImage);
             const capturedDescriptor = await getFaceDescriptor(capturedImage);
-    
+            
+            // On vérifie si l'image est bien un visage
             if (!profileDescriptor || !capturedDescriptor) {
-                statusText.innerText = "Erreur : Impossible de détecter un visage.";
+                statusText.innerText = "❌ Erreur : Impossible de détecter un visage.";
                 return;
             }
     
@@ -50,7 +59,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     
             if (distance < 0.6) {
                 statusText.innerText = "✅ Identité confirmée, accès autorisé !";
-                window.location.href = "/presence"; // Redirection
+                validationBtn.classList.remove('d-none');
+                videoBox.innerHTML = '';
+                // window.location.href = "/presence"; // Redirection
             } else {
                 statusText.innerText = "❌ Échec : Visage non reconnu.";
             }
@@ -62,12 +73,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     });
 
-    // Fonction pour obtenir le descripteur d'un visage
-    async function getFaceDescriptor(image) {
-        const detection = await faceapi.detectSingleFace(image).withFaceLandmarks().withFaceDescriptor();
-        return detection ? detection.descriptor : null;
-    }
+    
 });
+
+// Fonction pour obtenir le descripteur d'un visage
+async function getFaceDescriptor(image) {
+    const detection = await faceapi.detectSingleFace(image).withFaceLandmarks().withFaceDescriptor();
+    return detection ? detection.descriptor : null;
+}
 
 // Fonction pour capturer une image depuis le canvas et la convertir en image
 function captureImageFromCanvas(canvas) {

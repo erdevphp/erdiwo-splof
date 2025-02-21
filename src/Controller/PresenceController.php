@@ -31,6 +31,12 @@ final class PresenceController extends AbstractController{
     public function new(Request $request, EntityManagerInterface $entityManager, PresenceRepository $presenceRepository): Response
     {
         $hasAlreadyCheckIn = $presenceRepository->hasUserAlreadyCheckInToday($this->getUser());
+        // Si l'utilisateur n'a pas de photo de profil, on le renvoie vers la page de pointage
+        if(is_null($this->getUser()->getProfilPicture())) {
+            $this->addFlash('danger', "Vous n'avez pas de photo de profil. Parlez à votre supérieure.");
+            return $this->redirectToRoute('app_presence_index', [], Response::HTTP_SEE_OTHER);
+        }
+        // Si l'utilisateur a déjà pointé le jour J on le renvoie vers la page de pointage
         if($hasAlreadyCheckIn) {
             $this->addFlash('danger', "Ooops, vous avez déjà pointé ajourd'hui!!!");
             return $this->redirectToRoute('app_presence_index', [], Response::HTTP_SEE_OTHER);

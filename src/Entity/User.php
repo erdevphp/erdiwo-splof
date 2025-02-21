@@ -53,6 +53,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Presence::class, mappedBy: 'user', orphanRemoval: true)]
     private Collection $presences;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $profilPicture = null;
+
     public function __construct()
     {
         $this->presences = new ArrayCollection();
@@ -206,6 +209,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $presence->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getProfilPicture(): ?string
+    {
+        return $this->profilPicture;
+    }
+
+    public function setProfilPicture(?string $profilPicture): static
+    {
+        $this->profilPicture = $profilPicture;
 
         return $this;
     }
