@@ -7,9 +7,13 @@
 
     <hr>
 
-    {{ include('presence/_form.html.twig', {'button_label': 'Pointage de l\'heure de sortie'}) }}
+    {{ include('presence/_form.html.twig', {'button_label': 'Pointage de l\'heure de sortie', 'class_list': 'babou'}) }}
 
     <hr>
 
     <a href="{{ path('app_presence_index') }}">Revenir à la liste des pointages</a>
+{% endblock %}
+{% block javascripts %}
+    {{ encore_entry_script_tags('app') }}
+    {{ encore_entry_script_tags('presence') }}
 {% endblock %}

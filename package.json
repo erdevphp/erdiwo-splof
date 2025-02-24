@@ -22,6 +22,7 @@
     "dependencies": {
         "@vladmandic/face-api": "^1.7.15",
         "bootstrap": "^5.3.3",
-        "jquery": "^3.7.1"
+        "jquery": "^3.7.1",
+        "leaflet": "^1.9.4"
     }
 }

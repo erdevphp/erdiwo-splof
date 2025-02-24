@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const canvas = document.getElementById("canvas");
     const statusText = document.getElementById("status");
     const validationBtn = document.getElementById("validationBtn");
-    const profilPicture = document.getElementById("profilPicture").getAttribute('data-picture');    
+    const profilPicture = document.getElementById("profilPicture").getAttribute('data-picture');   
 
     // Charger les modèles Face-api.js
     await faceapi.nets.ssdMobilenetv1.loadFromUri('/models');

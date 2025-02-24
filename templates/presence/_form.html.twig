@@ -1,5 +1,5 @@
 {{ form_start(form) }}
     {{ form_widget(form) }}
     <input id="profilPicture" type="hidden" name="_token" data-picture="{{ app.user.profilPicture }}" value="{{ csrf_token('profilPicture' ~ app.user.profilPicture) }}">
-    <button id="validationBtn" class="d-none btn btn-success form-control">{{ button_label|default('Valider votre présence') }}</button>
+    <button id="validationBtn" class="{{class_list|default('d-none')}} btn btn-success form-control">{{ button_label|default('Valider votre présence') }}</button>
 {{ form_end(form) }}

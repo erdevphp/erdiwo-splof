@@ -3,10 +3,11 @@ function checkLocation() {
         navigator.geolocation.getCurrentPosition(
             (position) => {
                 // Coordonnée de la position actuelle de l'internaute
-                //const point = {lat: position.coords.latitude, long: position.coords.longitude};
-
+                const point = {lat: position.coords.latitude, long: position.coords.longitude};
+                //console.log(point);
+                
                 // Coordonnée de test qui est à l'intérieur de Anosy
-                const point = {lat:-18.916793, long:47.518336}
+                //const point = {lat:-18.916793, long:47.518336}
 
                 // Coordonnée lieu de Travail Anosy
                 const zoneAnosy = [
@@ -81,6 +82,7 @@ function crossProduct(x1, y1, x2, y2, px, py) {
 }
 
 document.addEventListener("DOMContentLoaded", checkLocation());
+
 /*
 Zone de test
 const point = {lat:-18.56, long:47.59}

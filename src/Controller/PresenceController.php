@@ -22,7 +22,7 @@ final class PresenceController extends AbstractController{
     public function index(PresenceRepository $presenceRepository): Response
     {
         return $this->render('presence/index.html.twig', [
-            'presences' => $presenceRepository->findBy(['user' => $this->getUser()]),
+            'presences' => $presenceRepository->findBy(['user' => $this->getUser()], ['startedAt' => 'DESC']),
             'hasAlreadyCheckIn' => $presenceRepository->hasUserAlreadyCheckInToday($this->getUser()),
         ]);
     }

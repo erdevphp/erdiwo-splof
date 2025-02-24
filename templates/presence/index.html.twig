@@ -30,14 +30,30 @@
         {% for presence in presences %}
         <tbody>
             <tr>
-                <td>{{ presence.startedAt ? presence.startedAt|date('H\\h i\\m\\i\\n') : '' }}</td>
-                <td>{{ presence.finishedAt ? presence.finishedAt|date('H\\h i\\m\\i\\n') : "N'oubliez pas de pointer votre heure de sortie" }}</td>
                 <td>
-                    {# <a class="btn btn-primary" href="{{ path('app_presence_show', {'id': presence.id}) }}">Voir le pointage</a> #}
-                    {% if hasAlreadyCheckIn %}
-                        <a class="btn btn-success" href="{{ path('app_presence_edit', {'id': presence.id}) }}">Pointage de l'heure de sortie</a>
-                    {% endif %}
-                </td>            
+                    {% if presence.startedAt %} 
+                        <span class="badge badge-info badge-counter">{{ presence.startedAt|date('d M') }}</span>
+                        <span>{{presence.startedAt|date('H\\h i\\m\\i\\n')}}</span>
+                    {% endif %} 
+                </td>
+                {% if hasAlreadyCheckIn == true and presence.startedAt|date('Y-m-d') == "now"|date('Y-m-d') %}
+                    <td>{{ presence.finishedAt ? presence.finishedAt|date('H\\h i\\m\\i\\n') : "N'oubliez pas de pointer votre heure de sortie" }}</td>
+                    <td>
+                        {% if presence.finishedAt %} 
+                            <a class="btn btn-info" href="{{ path('app_presence_edit', {'id': presence.id}) }}">Modifier l'heure de sortie</a>
+                        {% else %} 
+                            <a class="btn btn-success" href="{{ path('app_presence_edit', {'id': presence.id}) }}">Pointage de l'heure de sortie</a>
+                        {% endif %} 
+                    </td>   
+                {% else %} 
+                    {% if presence.finishedAt %} 
+                        <td class="text-success">{{presence.finishedAt|date('H\\h i\\m\\i\\n')}}</td>
+                        <td class="text-success">Présence valide</td>   
+                    {% else %} 
+                        <td class="text-warning">Vous n'avez pas pointé votre heure de sortie!</td>
+                        <td class="text-danger">Présence invalide</td>   
+                    {% endif %}   
+                {% endif %}         
             </tr>
         {% else %}
             <tr>
