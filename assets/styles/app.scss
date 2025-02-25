@@ -1,2 +1,48 @@
 @import '../bootstrap/css/bootstrap.min.css';
 @import '../fonts/fontawesome-all.min.css';
+
+// Boutton de selection dans le map
+button#select-house {
+    z-index: 1002; 
+    position: absolute; 
+    top : 40%; right: 0rem; 
+    padding: 5px; 
+    border-radius: 5px; 
+    font-size: 14px;
+}
+button#cancel-selection{
+    z-index: 1002; 
+    position: absolute; 
+    top : 40%; right: 0rem;
+    padding: 5px; 
+    border-radius: 5px; 
+    font-size: 14px;
+}
+.tooltip-custom {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.tooltip-custom::before {
+    content: attr(data-tooltip); /* Utilise l'attribut data-tooltip pour afficher le texte */
+    position: absolute;
+    bottom: 120%; /* Place l'infobulle au-dessus */
+    left: 0%;
+    transform: translateX(-100%);
+    background-color: rgba(0, 0, 0, 0.75);
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.tooltip-custom:hover::before {
+    opacity: 1;
+    visibility: visible;
+}
+

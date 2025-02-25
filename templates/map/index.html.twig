@@ -4,6 +4,10 @@
 
 {% block body %}
 <div id="map" style="height: 100vh"></div>
+
+<button id="select-house" class="btn btn-primary tooltip-custom" data-tooltip="Pointer votre résidence"><i class="fa fa-home"></i></button>
+<button id="cancel-selection" class="btn btn-primary d-none tooltip-custom" data-tooltip="Explorer la carte"><i class="fa fa-hand-point-left"></i></button>
+
 <div id="coordinates" style="z-index: 1000; position: absolute; bottom: 20px; right: 10px; background: white; padding: 5px; border-radius: 5px; font-size: 14px;">
     Coordonnées : <span id="coord-text">---</span>
 </div>
@@ -11,6 +15,6 @@
 {% block javascripts %}
     {{ encore_entry_script_tags('app') }}
     <!-- Leaflet JS -->
-     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     {{ encore_entry_script_tags('map') }}
 {% endblock %}
