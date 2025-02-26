@@ -83,15 +83,5 @@ function crossProduct(x1, y1, x2, y2, px, py) {
 
 document.addEventListener("DOMContentLoaded", checkLocation());
 
-/*
-Zone de test
-const point = {lat:-18.56, long:47.59}
-const zone = [
-    {lat:-18.55, long:47.58}, // First point
-    {lat:-18.57, long:47.58}, // First point
-    {lat:-18.57, long:47.60}, // First point
-    {lat:-18.55, long:47.60} // First point
-];
-*/
 
 

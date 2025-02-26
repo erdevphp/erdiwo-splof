@@ -26,7 +26,7 @@
 {% endblock %}
 
 {% block javascripts %}
-    {{ encore_entry_script_tags('app') }}
+    {{ parent() }}
     {{ encore_entry_script_tags('presence') }}
     {{ encore_entry_script_tags('reconnaissance') }}
 {% endblock %}
