@@ -1,19 +1,20 @@
 <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0">
     <div class="container-fluid d-flex flex-column p-0">
         <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
-            <div class="{#sidebar-brand-icon rotate-n-15#}"><img src="{{ asset('logos/LogoOiseauBlue.jpg') }}" alt="" class="{#img-thumbnail#}" width="70">{#<i class="fas fa-laugh-wink"></i>#}</div>
+            <div class=""><img src="{{ asset('logos/LogoOiseauBlue.jpg') }}" alt="" class="" width="70">{#<i class="fas fa-laugh-wink"></i>#}</div>
             <div class="sidebar-brand-text mx-1"><span>Erdiwo</span></div>
         </a>
         <hr class="sidebar-divider my-0">
         <ul class="nav navbar-nav text-light" id="accordionSidebar">
             <li class="nav-item" role="presentation"><a class="nav-link {{ activeLink('home') }}" href="{{ path('home') }}"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
-           {% if app.user %}
-                {# <li class="nav-item" role="presentation"><a class="nav-link {{ activeLink('project') }}" href="{{ path('project') }}"><i class="fas fa-smile"></i><span>Projet</span></a></li> #}
-                {# <li class="nav-item" role="presentation"><a class="nav-link {{ activeLink('profile') }}" href="{{ path('profile') }}"><i class="fas fa-user"></i><span>Profile</span></a></li> #}
-                {# <li class="nav-item" role="presentation"><a class="nav-link {{ activeLink('user') }}" href="{{ path('user') }}"><i class="fas fa-table"></i><span>Membre</span></a></li> #}
+            {% if app.user %}
                 {% if 'ROLE_ADMIN' in app.user.roles %}
                     <li class="nav-item" role="presentation"><a class="nav-link" href="{{ path('admin') }}"><i class="fas fa-table"></i><span>Administrer</span></a></li>
                 {% endif %}
+                {# <li class="nav-item" role="presentation"><a class="nav-link {{ activeLink('project') }}" href="{{ path('project') }}"><i class="fas fa-smile"></i><span>Projet</span></a></li> #}
+                <li class="nav-item" role="presentation"><a class="nav-link {{ activeLink('app_profile') }}" href="{{ path('app_profile', {id: app.user.id}) }}"><i class="fas fa-user"></i><span>Profil</span></a></li>
+                <li class="nav-item" role="presentation"><a class="nav-link {{ activeLink('app_user') }}" href="{{ path('app_user') }}"><i class="fas fa-users"></i><span>Membres</span></a></li>
+                
                 <li class="nav-item" role="presentation"><a class="nav-link {{ activeLink('app_presence_index') }}" href="{{ path('app_presence_index') }}"><i class="fas fa-box"></i><span>Pointage</span></a></li> 
                 <li class="nav-item" role="presentation"><a class="nav-link {{ activeLink('app_map') }}" href="{{ path('app_map') }}"><i class="fas fa-box"></i><span>Carte</span></a></li> 
             {% else %}

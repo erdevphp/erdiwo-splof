@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Membres{% endblock %}
+
+{% block body %}
+    {% for user in users %}
+        <div class="card shadow-lg mx-auto" style="">
+            <div class="card-body text-center">
+                {% if user.profilPicture %}
+                    <img src="/uploads/profil/{{user.profilPicture}}" class="rounded-circle img-fluid mb-3" alt="Avatar" style="max-width: 150px; height: auto;">
+                {% endif %}
+                <h3 class="card-title"><a href="{{path('app_profile', {id: app.user.id})}}">{{ user.fullname }}</a></h3>
+                <p class="text-muted">{{ user.email }}</p>
+                {% if user.pseudo %}
+                    <p class="card-text">Pseudo : {{user.pseudo}}</p>
+                {% endif %}
+                <p class="card-text text-info">Membre depuis {{user.createdAt|date('d M Y')}}</p>
+                <div class="d-flex justify-content-center gap-3">
+                    <a href="{{path('app_profile', {'id': user.id})}}" class="btn btn-primary">Voir profil</a> &nbsp;
+                    {% if app.user != user %}
+                        <a href="{#path('app_message_send', id: app.user.id)#}" class="btn btn-outline-secondary">Message</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}
