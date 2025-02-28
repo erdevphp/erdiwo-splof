@@ -35,6 +35,7 @@ final class MessageController extends AbstractController
         
         // On récupère les messages si nous sommes dans notre conversation
         $messages = $this->messageRepository->findMessageByConversationId($conversation->getId());
+
         array_map(function($message) {
             $message->setMine(
                 $message->getUser()->getId() === $this->getUser()->getId() ? true : false
@@ -71,8 +72,17 @@ final class MessageController extends AbstractController
     #[Route('/{id}', name: 'new', methods:["POST"])]
     public function newMessage(Request $request, Conversation $conversation): JsonResponse
     {
+        
+        // Ajoute un système de Vote pour voir si un utilisateur peut acceder à une conversation
+        $this->denyAccessUnlessGranted('view', $conversation);
+
+        // On récupère les données envoyées depuis le client
+        $jsonData = json_decode($request->getContent(), true);
+
         $user = $this->getUser();
-        $content = $request->get('content', null);
+
+        // On récupère le contenu du message
+        $content = strip_tags(trim($jsonData['content']));
 
         $message = new Message();
         $message->setContent($content);
@@ -93,7 +103,12 @@ final class MessageController extends AbstractController
             throw $e;
         }
 
-        return $this->json($message, Response::HTTP_CREATED, [], [
+        $data = [
+            "content" => $message->getContent(),
+            "createdAt" => $message->getCreatedAt()
+        ];
+
+        return $this->json($data, Response::HTTP_CREATED, [], [
             'attributes' => self::ATTRIBUTES_TO_SERIALIZE
         ]);
     }

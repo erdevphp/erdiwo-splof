@@ -17,8 +17,8 @@
                         &nbsp;&nbsp;&nbsp;&nbsp;
                         <div class="flex-grow-1">
                             <h4 class="mb-0 h6"> {{conversation.lastname ~ ' ' ~ conversation.firstname}} </h4>
-                            <div class="text-primary small">{{conversation.content}}</div>
-                            <time class="timeago small" datetime="{{conversation.createdAt|date('c')}}">{{ conversation.createdAt|date('d/m/Y H:i') }}</time>
+                            <div class="text-primary small contentMessage">{{conversation.content}}</div>
+                            <time class="timeago small createdAtMessage" datetime="{{conversation.createdAt|date('c')}}">{{ conversation.createdAt|date('d/m/Y H:i') }}</time>
                         </div>
                     </a>
                 {% endfor %}
@@ -35,10 +35,10 @@
                     
                 </div>
                 <div class="card-footer">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Écrire un message...">
+                    <form class="new-message input-group" method="POST">
+                        <input name="content" type="text" class="content form-control" placeholder="Écrire un message..." required>
                         <button class="btn btn-primary"><i class="fa fa-paper-plane"></i></button>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
