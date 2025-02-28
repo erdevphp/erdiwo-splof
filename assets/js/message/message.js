@@ -55,6 +55,8 @@ document.addEventListener("DOMContentLoaded", function () {
         e.preventDefault(); 
         let chatBox = document.querySelector(".chat-box"); // Zone de chat
         content = document.querySelector('.content').value;
+        console.log(this.getAttribute('data-id'), chatBox);
+        
         axios
             .post(this.action, { id: this.getAttribute('data-id'), content: content })
             .then(response => {

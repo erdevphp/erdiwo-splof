@@ -5,25 +5,7 @@
 {% block body %}
     <div class="container">
         <div class="card shadow-lg mx-auto" style="">
-            <div class="card-body text-center">
-                {% if user.profilPicture %}
-                    <img src="/uploads/profil/{{user.profilPicture}}" 
-                        class="rounded-circle img-fluid mb-3" 
-                        alt="Avatar" 
-                        style="max-width: 150px; height: auto;">
-                {% endif %}
-                <h3 class="card-title">{{ user.fullname }}</h3>
-                <p class="text-muted">{{ user.email }}</p>
-                <p class="card-text text-info">Membre depuis {{user.createdAt|date('d M Y')}}</p>
-                {% if user.pseudo %}
-                    <p class="card-text">Pseudo : {{user.pseudo}}</p>
-                {% endif %}
-                <div class="d-flex justify-content-center gap-3">
-                    {# <a href="#" class="btn btn-primary">Suivre</a> #}
-                    {# <a href="path('app_message_send', {id: app.user.id})" class="btn btn-outline-secondary">Message</a> #}
-                </div>
-            </div>
+            {{ include('user/_userInfo.html.twig') }}
         </div>
     </div>
-
 {% endblock %}
