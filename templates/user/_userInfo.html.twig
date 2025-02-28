@@ -13,7 +13,7 @@
             <a href="{{path('app_profile', {'id': user.id})}}" class="btn btn-primary">Voir profil</a> &nbsp;
         {% endif %}
         {% if app.user != user %}
-            <a href="{{path('conversations.new', {id: user.id})}}" class="btn btn-outline-secondary">Message</a>
+            <a href="{{path('conversations.check', {id: user.id})}}" class="btn btn-outline-secondary">Message</a>
         {% endif %}
     </div>
 </div>

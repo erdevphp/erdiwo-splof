@@ -4,7 +4,6 @@
 
 {% block body %}
 
-<div class="container">
     <div class="row">
         <!-- Liste des conversations -->
         <div class="col-md-4">
@@ -12,13 +11,15 @@
                 {% for conversation in conversations %}
                     <a href="{{path('messages.get', {id: conversation.conversationId})}}" 
                         data-id="{{ conversation.conversationId }}"
-                        class="messages list-group-item list-group-item-action d-flex align-items-center">
+                        class="messages {{ app.request.get('active') == conversation.conversationId ? "active messageActive" : null }} list-group-item list-group-item-action d-flex align-items-center">
                         <img src="{{asset('/uploads/profil/' ~ conversation.profilPicture)}}" class="rounded-circle me-3" width="50" alt="Profil">
                         &nbsp;&nbsp;&nbsp;&nbsp;
                         <div class="flex-grow-1">
-                            <h4 class="mb-0 h6"> {{conversation.lastname ~ ' ' ~ conversation.firstname}} </h4>
-                            <div class="text-primary small contentMessage">{{conversation.content}}</div>
-                            <time class="timeago small createdAtMessage" datetime="{{conversation.createdAt|date('c')}}">{{ conversation.createdAt|date('d/m/Y H:i') }}</time>
+                            <h4 class="mb-0 h6">{{conversation.lastname ~ ' ' ~ conversation.firstname}} </h4>
+                            <div class="small contentMessage"><i class="fa fa-envelope"></i> {{conversation.content}}</div>
+                            <div class="small">
+                                <i class="fa fa-clock"></i> <time class="timeago small createdAtMessage" datetime="{{conversation.createdAt|date('c')}}">{{ conversation.createdAt|date('d/m/Y H:i') }}</time>
+                            </div>
                         </div>
                     </a>
                 {% endfor %}
@@ -43,8 +44,6 @@
             </div>
         </div>
     </div>
-</div>
-
 {% endblock %}
 
 {% block javascripts %}
