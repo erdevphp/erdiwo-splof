@@ -11,7 +11,7 @@
                 {% if 'ROLE_ADMIN' in app.user.roles %}
                     <li class="nav-item" role="presentation"><a class="nav-link" href="{{ path('admin') }}"><i class="fas fa-table"></i><span>Administrer</span></a></li>
                 {% endif %}
-                {# <li class="nav-item" role="presentation"><a class="nav-link {{ activeLink('project') }}" href="{{ path('project') }}"><i class="fas fa-smile"></i><span>Projet</span></a></li> #}
+                <li class="nav-item" role="presentation"><a class="nav-link {{ activeLink('conversations.get') }}" href="{{ path('conversations.get') }}"><i class="fas fa-envelope"></i><span>Messages</span></a></li>
                 <li class="nav-item" role="presentation"><a class="nav-link {{ activeLink('app_profile') }}" href="{{ path('app_profile', {id: app.user.id}) }}"><i class="fas fa-user"></i><span>Profil</span></a></li>
                 <li class="nav-item" role="presentation"><a class="nav-link {{ activeLink('app_user') }}" href="{{ path('app_user') }}"><i class="fas fa-users"></i><span>Membres</span></a></li>
                 

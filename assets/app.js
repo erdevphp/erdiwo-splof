@@ -17,9 +17,12 @@ import './js/bs-init.js?h=08ba999e06fc97f895c72848bddb91c1'
 import './js/jquery.easing'
 import './js/theme.js?h=6d33b44a6dcb451ae1ea7efc7b5c5e30'
 import './js/jquery.timeago'
+import './js/jquery.timeago.fr'
 
 jQuery(document).ready(function() {
-    jQuery("time.timeago").timeago();
+    $.timeago.settings.lang = "fr";  // Définir la langue sur "fr"
+    $("time.timeago").timeago();
+    
     const logout = document.querySelector('#logout')
     if (logout) {
         logout.addEventListener('click', function(e){

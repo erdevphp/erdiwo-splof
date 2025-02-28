@@ -26,6 +26,7 @@ Encore
     .addEntry('presence', './assets/js/presence/localisation.js')
     .addEntry('reconnaissance', './assets/js/presence/reconnaissance.js')
     .addEntry('map', './assets/js/map/map.js')
+    .addEntry('message', './assets/js/message/message.js')
     .addEntry('bootstrap', './node_modules/bootstrap/dist/js/bootstrap.bundle.js')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.

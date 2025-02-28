@@ -1,20 +1,53 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello MessageController!{% endblock %}
+{% block title %}Boite de réception{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+<div class="container">
+    <div class="row">
+        <!-- Liste des conversations -->
+        <div class="col-md-4">
+            <div class="list-group">
+                {% for conversation in conversations %}
+                    <a href="{{path('messages.get', {id: conversation.conversationId})}}" 
+                        data-id="{{ conversation.conversationId }}"
+                        class="messages list-group-item list-group-item-action d-flex align-items-center">
+                        <img src="{{asset('/uploads/profil/' ~ conversation.profilPicture)}}" class="rounded-circle me-3" width="50" alt="Profil">
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <div class="flex-grow-1">
+                            <h4 class="mb-0 h6"> {{conversation.lastname ~ ' ' ~ conversation.firstname}} </h4>
+                            <div class="text-primary small">{{conversation.content}}</div>
+                            <time class="timeago small" datetime="{{conversation.createdAt|date('c')}}">{{ conversation.createdAt|date('d/m/Y H:i') }}</time>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>D:/DOCUMENT PERSONNEL/2.Devy/PHP/Erdiwo-PLOF/src/Controller/MessageController.php</code></li>
-        <li>Your template at <code>D:/DOCUMENT PERSONNEL/2.Devy/PHP/Erdiwo-PLOF/templates/message/index.html.twig</code></li>
-    </ul>
+        <!-- Zone de chat -->
+        <div class="col-md-8 chat-container d-none">
+            <div class="card">
+                <div class="chat-header card-header d-flex align-items-center justify-content-center">
+
+                </div>
+                <div class="card-body chat-box p-3" style="height: 70vh; overflow-y: auto;">
+                    
+                </div>
+                <div class="card-footer">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Écrire un message...">
+                        <button class="btn btn-primary"><i class="fa fa-paper-plane"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('message') }}
 {% endblock %}

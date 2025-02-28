@@ -75,9 +75,12 @@ final class ConversationController extends AbstractController{
     #[Route('/', name: 'get', methods: ["GET"])]
     public function getConversations(
         ConversationRepository $conversationRepository
-    ) : JsonResponse
+    ) : Response
     {
         $conversations = $conversationRepository->findConversationByUser($this->getUser()->getId());
-        return $this->json($conversations);
+        return $this->render('message/index.html.twig', [
+            'conversations' => $conversations
+        ]);
+        //return $this->json($conversations);
     }
 }
