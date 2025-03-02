@@ -16,10 +16,22 @@
                         &nbsp;&nbsp;&nbsp;&nbsp;
                         <div class="flex-grow-1">
                             <h4 class="mb-0 h6">{{conversation.lastname ~ ' ' ~ conversation.firstname}} </h4>
-                            <div class="small contentMessage"><i class="fa fa-envelope"></i> {{conversation.content}}</div>
-                            <div class="small">
-                                <i class="fa fa-clock"></i> <time class="timeago small createdAtMessage" datetime="{{conversation.createdAt|date('c')}}">{{ conversation.createdAt|date('d/m/Y H:i') }}</time>
+                            <div class="small contentMessage">
+                                {% if conversation.content %}
+                                    <i class="fa fa-envelope"></i> {{conversation.content }}
+                                {% else %}
+                                    <div style="color: rgb(211, 248, 249);">Bienvenue sur la messagerie ...</div>
+                                {% endif %}
                             </div>
+                            {% if conversation.createdAt %}
+                                <div class="small">
+                                    <i class="fa fa-clock"></i> <time class="timeago small createdAtMessage" datetime="{{conversation.createdAt|date('c')}}">{{ conversation.createdAt|date('d/m/Y H:i') }}</time>
+                                </div>
+                            {% else %}
+                                <div class="small">
+                                    <time class="timeago small createdAtMessage" datetime=""></time>
+                                </div>
+                            {% endif %}
                         </div>
                     </a>
                 {% endfor %}
@@ -32,12 +44,18 @@
                 <div class="chat-header card-header d-flex align-items-center justify-content-center">
 
                 </div>
-                <div class="card-body chat-box p-3" style="height: 70vh; overflow-y: auto;">
+                <div id="loading-indicator" class="d-none" style="font-size: 35px; position: fixed; top: 50%; left: 70%; transform: translate(-50%, -50%); z-index: 1000;">
+                    <div class="spinner-border text-info" role="status">
+                        <span class="sr-only">Chargement...</span>
+                    </div>
+                </div>
+                <div id="error-message" class="alert alert-danger d-none" role="alert" style="position: fixed; bottom: 0; left: 0; z-index: 1000; text-align: center;"></div>
+                <div class="card-body d-flex chat-box p-3" style="height: 70vh; overflow-y: auto; flex-direction: column;">
                     
                 </div>
                 <div class="card-footer">
                     <form class="new-message input-group" method="POST">
-                        <input name="content" type="text" class="content form-control" placeholder="Écrire un message..." required>
+                        <textarea name="content" class="content form-control" style="height:40px;" placeholder="Ecrire un message ..." required></textarea>
                         <button class="btn btn-primary"><i class="fa fa-paper-plane"></i></button>
                     </form>
                 </div>

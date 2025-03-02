@@ -26,6 +26,7 @@ class MessageRepository extends ServiceEntityRepository
             ->where('m.conversation = :conversationId')
             ->setParameter('conversationId', $conversationId)
             //->orderBy('m.id', 'DESC')
+            //->setMaxResults(20)
         ;
         return $queryBuilder->getQuery()->getResult();
     }

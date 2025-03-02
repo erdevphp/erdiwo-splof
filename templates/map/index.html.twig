@@ -1,4 +1,4 @@
-{% extends 'baseMap.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}Carte{% endblock %}
 
@@ -12,6 +12,12 @@
     Coordonnées : <span id="coord-text">---</span>
 </div>
 {% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+{% endblock %}
+
 {% block javascripts %}
     {{ parent() }}
     <!-- Leaflet JS -->

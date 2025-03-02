@@ -1,133 +1,188 @@
 import axios from 'axios';
 
-const form = document.querySelector('.new-message');
-const active = "active";
-let chatContainer = document.querySelector(".chat-container"); // Le conteneur de Messages
-let chatBox = document.querySelector(".chat-box"); // Zone de chat
-let chatHeader = document.querySelector(".chat-header"); // Entete
+class Messenger {
+    constructor() {
+        this.form = document.querySelector('.new-message');
+        this.chatContainer = document.querySelector(".chat-container");
+        this.chatBox = document.querySelector(".chat-box");
+        this.chatHeader = document.querySelector(".chat-header");
+        this.linkActive = document.querySelector('a.messageActive');
+        this.loadingIndicator = document.getElementById("loading-indicator");
+        this.errorMessage = document.getElementById("error-message");
+        this.activeClass = "active";
 
-document.addEventListener("DOMContentLoaded", function () {
-
-    const linkActive = document.querySelector('a.messageActive');
-
-    if (linkActive) {
-        let conversationId = linkActive.getAttribute("data-id"); // L'attribut data-id pour envoyer le formulaire
-
-        getMessagesByAxios(conversationId);
+        this.init();
     }
 
-    document.querySelectorAll(".messages").forEach(item => {
-        item.addEventListener("click", function (e) {
-            e.preventDefault(); // Empêcher la navigation normale
+    init() {
+        // Initialisation des écouteurs d'événements
+        document.addEventListener("DOMContentLoaded", () => this.handlePageLoad());
+        this.form.addEventListener('submit', (e) => this.handleFormSubmit(e));
 
-            $('.messages').removeClass(active);
-            this.classList.add(active);
-
-            let conversationId = this.getAttribute("data-id"); // L'attribut data-id pour envoyer le formulaire
-            getMessagesByAxios(conversationId)
+        // Gestion des clics sur les conversations
+        document.querySelectorAll(".messages").forEach(item => {
+            item.addEventListener("click", (e) => this.handleConversationClick(e, item));
         });
-    });
+    }
 
-    form.addEventListener('submit', function (e) {
-        e.preventDefault(); 
-        let chatBox = document.querySelector(".chat-box"); // Zone de chat
-        content = document.querySelector('.content').value;
+    showLoading() {
+        this.loadingIndicator.classList.remove('d-none');
+    }
+
+    hideLoading() {
+        this.loadingIndicator.classList.add('d-none');
+    }
+
+    showError(message) {
+        this.errorMessage.textContent = message;
+        this.errorMessage.classList.remove('d-none');
+        setTimeout(() => this.hideError(), 5000); // Masquer l'erreur après 5 secondes
+    }
+
+    hideError() {
+        this.errorMessage.classList.add('d-none');
+    }
+
+    // Fonction pour charger les messages quand un lien a l'attribut active
+    handlePageLoad() {
+        if (this.linkActive) {
+            const conversationId = this.linkActive.getAttribute("data-id");
+            this.loadMessages(conversationId);
+        }
+    }
+
+    // Gérer le click sur les listes de conversation pour mettre à jour les liens
+    handleConversationClick(e, item) {
+        e.preventDefault();
+        this.setActiveConversation(item);
+        const conversationId = item.getAttribute("data-id");
         
-        axios
-            .post(this.action, { id: this.getAttribute('data-id'), content: content })
+        this.loadMessages(conversationId);
+    }
+
+    // Gérer l'envoie du messages vers le serveur
+    handleFormSubmit(e) {
+        e.preventDefault();
+        const content = document.querySelector('.content').value;
+        const conversationId = this.form.getAttribute('data-id');
+
+        this.sendMessage(conversationId, content)
             .then(response => {
-                // Récupère les données du message envoyé
-                let msg = response.data;
 
-                // On récupère le lien du message en cours pour le mettre à jour
-                let conversationItem = document.querySelector(`a[href="/messages/${this.getAttribute('data-id')}"]`);
-                
-                // On récupère le contenu et la date du dernier message
-                let contentMessage = conversationItem.querySelector('.contentMessage');
-                let createdAtMessage = conversationItem.querySelector('.createdAtMessage');
-
-                // On crée un nouvel élement time pour afficher dans jquery timeago
-                let newCreatedMessage = document.createElement("time");
-                newCreatedMessage.textContent = msg.createdAt;
-                newCreatedMessage.setAttribute('datetime', msg.createdAt);
-                newCreatedMessage.classList.add('timeago', 'small', 'createdAtMessage');
-                
-                // On met à jour la date du dernier message
-                createdAtMessage.replaceWith(newCreatedMessage);
-                $("time.timeago").timeago();
-                
-                // On met à jour le contenu du dernier message
-                contentMessage.innerHTML = `<i class="fa fa-envelope"></i> ${msg.content}`;
-
-                // On met à jour la boite de réception
-                let parentList = conversationItem.parentNode;
-                parentList.prepend(conversationItem);
-
-                // On met à jour le ChatBox qui contient tous les messages envoyés et réçus
-                chatBox.innerHTML += `
-                    <div class="d-flex flex-column align-items-end text-white bg-primary mb-3 p-3 rounded">
-                        ${msg.content}
-                        <time class="timeago small" datetime="${msg.createdAt}"> ${msg.createdAt} </time>
-                    </div>
-                `;
-                // On met à jour le temps
-                $("time.timeago").timeago();
-
-                // On scroll vers le bas c'est-à-dire vers le dernier message envoyé
-                chatBox.scrollTop = chatBox.scrollHeight;
-
-                // On vide le contenu du message
-                document.querySelector('.content').value = ""
+                this.updateUIAfterSend(response.data, conversationId);
+                document.querySelector('.content').value = ""; // Vider le champ de message
             })
-            .catch(error => console.error("erreur d'envoie du message : ", error));
-    });
-});
+            .catch(error => this.showError("Erreur d'envoi du message. Veuillez réessayer."));
+    }
 
+    // Chargement des messages
+    async loadMessages(conversationId) {
+        this.showLoading();
+        try {
+            const response = await axios.get(`/messages/${conversationId}`);
+            const { messages, recipient } = response.data;
+            this.updateChatUI(messages, recipient, conversationId);
+            this.updateUrl(conversationId);
+        } catch (error) {
+            console.error("Erreur lors du chargement des messages:", error);
+        } finally {
+            this.hideLoading();
+        }
+    }
 
-function getMessagesByAxios(conversationId) {
-    // Requête AJAX avec Axios
-    axios
-    .get(`/messages/${conversationId}`)
-    .then(response => {
-        let data = response.data;
-        
-        let messages = data.messages;
-        let recipient = data.recipient;
+    // Simple fonction pour envoyer le message via Axios
+    async sendMessage(conversationId, content) {
+        return axios.post(this.form.action, { id: conversationId, content: content });
+    }
 
-        chatHeader.innerHTML = "";
-        chatBox.innerHTML = "";
-        
-        chatContainer.classList.remove('d-none');
+    // Mettre à jour la liste des conversations
+    updateUIAfterSend(msg, conversationId) {
+        const conversationItem = document.querySelector(`a[href="/messages/${conversationId}"]`);
+        const contentMessage = conversationItem.querySelector('.contentMessage');
+        const createdAtMessage = conversationItem.querySelector('.createdAtMessage');
+
+        const newCreatedMessage = document.createElement("time");
+        newCreatedMessage.textContent = msg.createdAt;
+        newCreatedMessage.setAttribute('datetime', msg.createdAt);
+        newCreatedMessage.classList.add('timeago', 'small', 'createdAtMessage');
+
+        createdAtMessage.replaceWith(newCreatedMessage);
+
+        contentMessage.innerHTML = `<i class="fa fa-envelope"></i> ${msg.content}`;
+
+        // Déplacer la conversation en haut de la liste
+        const parentList = conversationItem.parentNode;
+        parentList.prepend(conversationItem);
+
+        // Ajouter le message à la boîte de chat
+        this.chatBox.innerHTML += this.updatedMessageHTML(msg.content, msg.createdAt, true)
+
+        $("time.timeago").timeago();
+
+        this.chatBox.scrollTop = this.chatBox.scrollHeight; // Scroll vers le bas
+    }
+
+    // Mise à jour du Chat
+    updateChatUI(messages, recipient, conversationId) {
+        this.chatHeader.innerHTML = "";
+        this.chatBox.innerHTML = "";
+        this.chatContainer.classList.remove('d-none');
 
         // Mettre à jour l'en-tête du chat
-        chatHeader.innerHTML = `
+        this.chatHeader.innerHTML = `
             <h6 class="mb-0"><a href="/user/profile/${recipient.id}">${recipient.fullname}</a></h6>
         `;
 
-        // On vérifie s'il y a des messages
+        // Afficher les messages
         if (messages.length > 0) {
             messages.forEach(msg => {
-                let isMe = msg.mine ? "align-items-end text-white bg-primary" : "align-items-start bg-light";
-                //let author = msg.mine ? "" : `<h2>${recipient.fullname}</h2>`;
-                chatBox.innerHTML += `
-                    <div class="d-flex flex-column ${isMe} mb-3 p-3 rounded">
-                        ${msg.content}
-                        <time class="timeago small" datetime="${msg.createdAt}"> ${msg.createdAt} </time>
-                    </div>
-                `;                     
+                this.chatBox.innerHTML += this.updatedMessageHTML(msg.content, msg.createdAt, msg.mine);
             });
             $("time.timeago").timeago();
-            chatBox.scrollTop = chatBox.scrollHeight; // Scroll vers le bas
-        } else { // Sinon on affiche bienvenue sur la messagerie
-            chatBox.innerHTML += `
+            this.chatBox.scrollTop = this.chatBox.scrollHeight; // Scroll vers le bas
+        } else {
+            this.chatBox.innerHTML = `
                 <div class="text-info text-center">
                     Bienvenue sur la messagerie...
                 </div>
             `;
         }
-        // Mise à jour de l'attribut action du formulaire d'envoie
-        form.action = `/messages/${conversationId}`;  
-        form.setAttribute('data-id', conversationId);                     
-    })
-    .catch(error => console.error("Erreur lors du chargement des messages:", error));
+
+        // Mettre à jour le formulaire
+        this.form.action = `/messages/${conversationId}`;
+        this.form.setAttribute('data-id', conversationId);
+    }
+
+    // Mettre à jour et Afficher le contenu du chat.
+    updatedMessageHTML(content, createdAt, isMine) {
+        const justifyContent = isMine ? "justify-content-end" : "justify-content-start";
+        const color = isMine ? "text-light" : "text-secondary";
+        const badge = isMine ? "bg-primary" : "bg-light";
+        const position = isMine ? "text-right" : "text-left";
+        return `
+            <div class="d-flex ${justifyContent} mb-3 p-3 rounded">
+                <div class="${badge} rounded ${color} p-2 ${position}" style="max-width: 75%; word-wrap: break-word;">
+                    <div>${content}</div>
+                    <div class="small">
+                        <i class="fa fa-clock"></i> <time class="timeago" datetime="${createdAt}"> ${createdAt} </time>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    // Mise à jour du lien
+    updateUrl(activeId) {
+        const newUrl = `/conversations/?active=${activeId}`;
+        window.history.replaceState(null, "", newUrl);
+    }
+
+    // Mettre un élément courant en active
+    setActiveConversation(element) {
+        document.querySelectorAll(".messages").forEach(item => item.classList.remove(this.activeClass));
+        element.classList.add(this.activeClass);
+    }
 }
+
+// Initialisation de la messagerie
+new Messenger();

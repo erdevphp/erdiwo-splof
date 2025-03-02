@@ -92,7 +92,9 @@ final class ConversationController extends AbstractController{
         $conversation = $conversationRepository->findConversationByParticipants($otherUser->getId(), $this->getUser()->getId());
         // Si jamais il y une conversation on lève une nouvelle exception
         if (count($conversation)) {
-            return $this->redirectToRoute('conversations.get', ['active' => $conversation[0]['conversationId']]);
+            return $this->redirectToRoute('conversations.get', [
+                'active' => $conversation[0]['conversationId'],
+            ]);
             throw new Exception("The conversation exists");
         }
         // Si n'y a pas encore de conversation, on crée en Un
@@ -119,10 +121,14 @@ final class ConversationController extends AbstractController{
             $entityManager->rollback();
             throw $e;
         }
+
+        return $this->redirectToRoute('conversations.get', [
+            'active' => $conversation->getId(),
+        ]);
         
-        return $this->json([
-            'id' => $conversation->getId()
-        ], Response::HTTP_CREATED, [], []);
+        // return $this->json([
+        //     'id' => $conversation->getId()
+        // ], Response::HTTP_CREATED, [], []);
     }
 
     #[Route('/', name: 'get', methods: ["GET"])]
