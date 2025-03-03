@@ -11,6 +11,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mercure\HubInterface;
+use Symfony\Component\Mercure\PublisherInterface;
+use Symfony\Component\Mercure\Update;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/messages', name: 'messages.')]
@@ -20,7 +23,7 @@ final class MessageController extends AbstractController
 
     public function __construct(
         private EntityManagerInterface $entityManager,
-        private MessageRepository $messageRepository
+        private MessageRepository $messageRepository,
     ){ 
     }
 
@@ -28,8 +31,12 @@ final class MessageController extends AbstractController
      * On récupère les messages propres à l'utilisateur courant
      */
     #[Route('/{id}', name: 'get', methods:["GET"])]
-    public function getMessage(Request $request, Conversation $conversation): Response
+    public function getMessage(Request $request, ?Conversation $conversation): Response
     {
+        if ($conversation === null) {
+            return $this->redirectToRoute('home');
+        }
+
         // Ajoute un système de Vote pour voir si un utilisateur peut acceder à une conversation
         $this->denyAccessUnlessGranted('view', $conversation);
         
@@ -112,4 +119,18 @@ final class MessageController extends AbstractController
             'attributes' => self::ATTRIBUTES_TO_SERIALIZE
         ]);
     }
+
+    #[Route('/test/mercure', name: 'test_mercure', methods:["GET", "POST"])]
+    public function publish(HubInterface $hub): Response
+    {
+        $update = new Update(
+            '/messages',
+            json_encode(['status' => 'OutOfStock'])
+        );
+
+        $hub->publish($update);
+
+        return new Response('published!');
+    }
+
 }

@@ -3,6 +3,10 @@ framework:
     secret: '%env(APP_SECRET)%'
     default_locale: fr
 
+    http_client:
+        default_options:
+            verify_peer: false
+
     # Note that the session will be started ONLY if you read or write from it.
     session: true
 

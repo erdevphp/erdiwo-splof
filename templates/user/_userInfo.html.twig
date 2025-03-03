@@ -2,7 +2,7 @@
     {% if user.profilPicture %}
         <img src="{{asset('/uploads/profil/' ~ user.profilPicture)}}" class="rounded-circle img-fluid mb-3" alt="Avatar" style="max-width: 150px; height: auto;">
     {% endif %}
-    <h3 class="card-title"><a href="{{path('app_profile', {id: app.user.id})}}">{{ user.fullname }}</a></h3>
+    <h3 class="card-title"><a href="{{path('app_profile', {id: user.id})}}">{{ user.fullname }}</a></h3>
     <p class="text-muted">{{ user.email }}</p>
     {% if user.pseudo %}
         <p class="card-text">Pseudo : {{user.pseudo}}</p>

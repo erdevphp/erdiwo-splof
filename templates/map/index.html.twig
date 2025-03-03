@@ -1,9 +1,15 @@
-{% extends 'base.html.twig' %}
+{% extends 'baseMap.html.twig' %}
 
 {% block title %}Carte{% endblock %}
 
 {% block body %}
-<div id="map" style="height: 100vh"></div>
+<div id="map" style="height: 100vh;"></div>
+
+<div id="loadingIndicator" class="d-none" style="font-size: 35px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000;">
+    <div class="spinner-border text-info" role="status">
+        <span class="sr-only">Chargement...</span>
+    </div>
+</div>
 
 <button id="select-house" class="btn btn-primary tooltip-custom" data-tooltip="Pointer votre résidence"><i class="fa fa-home"></i></button>
 <button id="cancel-selection" class="btn btn-primary d-none tooltip-custom" data-tooltip="Explorer la carte"><i class="fa fa-hand-point-left"></i></button>
