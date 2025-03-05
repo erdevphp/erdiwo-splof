@@ -24,7 +24,6 @@ Encore
     .addEntry('jquery', './node_modules/jquery/dist/jquery.min.js')
     .addEntry('new', './assets/js/project/new_project.js')
     .addEntry('presence', './assets/js/presence/localisation.js')
-    .addEntry('reconnaissance', './assets/js/presence/reconnaissance.js')
     .addEntry('map', './assets/js/map/map.js')
     .addEntry('message', './assets/js/message/message.js')
     .addEntry('bootstrap', './node_modules/bootstrap/dist/js/bootstrap.bundle.js')

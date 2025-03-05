@@ -12,7 +12,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mercure\HubInterface;
-use Symfony\Component\Mercure\PublisherInterface;
 use Symfony\Component\Mercure\Update;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -120,11 +119,11 @@ final class MessageController extends AbstractController
         ]);
     }
 
-    #[Route('/test/mercure', name: 'test_mercure', methods:["GET", "POST"])]
+    #[Route('/test/mercure', name: 'test', methods:["GET"])]
     public function publish(HubInterface $hub): Response
     {
         $update = new Update(
-            '/messages',
+            'https://example.com/books/1',
             json_encode(['status' => 'OutOfStock'])
         );
 

@@ -1,5 +1,10 @@
 {
     "editor.fontFamily": "'JetBrains Mono', Consolas, 'Courier New', monospace",
-    "editor.fontWeight": "200",
-    "editor.lineHeight": 24
+    "editor.fontWeight": "300",
+    "editor.lineHeight": 24,
+    "editor.minimap.enabled": false,
+    "workbench.tree.indent": 20,
+    "files.exclude": {
+        "**/.vscode": true
+    }
 }
